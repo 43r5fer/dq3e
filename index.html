@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ProKust</title><meta name="theme-color" content="#0b1020">
+<style>
+:root{--bg:#0b1020;--p1:#121a33;--p2:#18224424;--line:#25315a;--tx:#e6ebff;--mu:#8b97c4;--a:#7c6bff;--b:#26d9c4;--bad:#ff7a90;--ok:#59e3a0;box-sizing:border-box}
+*,*:before,*:after{box-sizing:inherit}html,body{height:100%;margin:0}
+body{background:radial-gradient(900px 500px at 85% -10%,#2a2470 0,transparent 60%),radial-gradient(700px 400px at -10% 110%,#0d4a57 0,transparent 55%),var(--bg);color:var(--tx);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit;color:inherit;background:#0f1630;border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+button{cursor:pointer;transition:transform .12s,border-color .12s}button:hover{border-color:var(--a)}button:active{transform:scale(.97)}
+button.pri{background:linear-gradient(135deg,var(--a),var(--b));border:0;color:#06101c;font-weight:700}
+button.dng{color:var(--bad);border-color:#5a2a3a}button:disabled{opacity:.5;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--b);outline-offset:2px}
+textarea{width:100%;resize:vertical;font-family:ui-monospace,Consolas,monospace}
+h1,h2,h3{margin:0;letter-spacing:-.02em}.mu{color:var(--mu)}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.g{flex:1}[hidden]{display:none!important}
+#auth{position:fixed;inset:0;display:grid;place-items:center;z-index:20;padding:16px;background:var(--bg)}
+.box{width:min(420px,100%);background:var(--p1);border:1px solid var(--line);border-radius:18px;padding:28px}
+.box h1{font-size:32px;background:linear-gradient(135deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.box input{width:100%;margin:12px 0;font:600 20px ui-monospace,Consolas,monospace;letter-spacing:.08em;text-align:center}
+#amsg{min-height:1.4em;margin:10px 0 0;color:var(--bad)}#amsg.ok{color:var(--ok)}
+#app{display:grid;grid-template-columns:220px 1fr;height:100%}
+#nav{display:flex;flex-direction:column;gap:6px;padding:18px 12px;border-right:1px solid var(--line);background:#0b1020cc}
+.brand{font-size:22px;font-weight:800;padding:0 10px 14px;background:linear-gradient(135deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+#nav .nv{text-align:left;background:none;border:0;padding:10px 12px}#nav .nv.on{background:#1b2650;color:var(--b)}
+main{min-width:0;min-height:0;overflow:auto;padding:24px}.view{max-width:1200px;margin:0 auto;height:100%}.view.scroll{height:auto}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:18px 0}
+.st{background:var(--p1);border:1px solid var(--line);border-radius:14px;padding:14px}.st b{display:block;font-size:20px;margin-top:2px;overflow-wrap:anywhere}
+.hero{background:linear-gradient(135deg,#2a2470,#0d4a57);border-radius:20px;padding:28px;border:1px solid var(--line)}.hero h1{font-size:30px}.hero p{max-width:60ch}
+h2{margin:26px 0 12px;font-size:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.mc{background:var(--p1);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}.mc:hover{border-color:var(--a)}
+.mt{font-weight:700;overflow-wrap:anywhere}.tags{display:flex;gap:6px;flex-wrap:wrap}.tg{font-size:12px;padding:2px 8px;border-radius:99px;background:#1b2650;color:var(--mu)}.tg.hl{background:#12403f;color:var(--b)}
+.mb{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}.mb progress{width:100%}progress{height:10px;accent-color:var(--b)}.mb small{width:100%;color:var(--mu);overflow-wrap:anywhere}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0}.bar input[type=search]{flex:1;min-width:200px}
+.warn{background:#3a1d2a;border:1px solid #6a2c42;border-radius:12px;padding:10px 14px;margin:12px 0}
+#v-chat{display:flex;flex-direction:column}#log{flex:1;min-height:200px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:6px 2px}
+.m{padding:10px 14px;border-radius:14px;max-width:85%;white-space:pre-wrap;overflow-wrap:anywhere}.m.u{background:#2a2470;align-self:flex-end}.m.a{background:var(--p1);border:1px solid var(--line)}
+#v-work{display:flex;flex-direction:column}#split{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pn{display:flex;flex-direction:column;min-height:0;min-width:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--p1)}
+#ft{display:flex;overflow-x:auto;border-bottom:1px solid var(--line)}#ft button{border:0;border-radius:0;background:none;white-space:nowrap}#ft button.on{color:var(--b);box-shadow:inset 0 -2px var(--b)}
+#ed{flex:1;min-height:0}#pv{flex:1;border:0;background:#fff;min-height:0}
+#con{height:32%;margin:0;overflow:auto;padding:8px;background:#070b18;border-top:1px solid var(--line);font:12px/1.45 ui-monospace,Consolas,monospace;white-space:pre-wrap}
+@media(max-width:800px){#app{grid-template-columns:1fr;grid-template-rows:1fr auto}#nav{flex-direction:row;order:2;border-right:0;border-top:1px solid var(--line);overflow-x:auto;padding:8px}.brand,#who{display:none}#split{grid-template-columns:1fr;grid-template-rows:60vh 60vh}main{padding:14px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head>
+<body>
+<div id="auth"><div class="box"><h1>ProKust</h1><p class="mu">Your local AI workspace. Log in with your access code or create one.</p>
+<input id="code" placeholder="PK-XXXXXX" autocomplete="off" spellcheck="false" aria-label="Access code">
+<div class="row"><button id="login" class="pri">Log in</button><button id="signup">Create new code</button></div><p id="amsg" role="status"></p></div></div>
+
+<div id="app" hidden>
+<nav id="nav"><div class="brand">ProKust</div>
+<button class="nv on" data-v="dash">Dashboard</button><button class="nv" data-v="models">Models</button><button class="nv" data-v="chat">Chat</button><button class="nv" data-v="work">Workspace</button>
+<span class="g"></span><button id="install" hidden>Install ProKust Desktop App</button><small id="who" class="mu"></small><button id="logout">Log out</button></nav>
+<main>
+<section id="v-dash" class="view scroll">
+ <div class="hero"><h1>Welcome back</h1><p>Download an open-source AI model once, then chat with it on your own GPU, even offline. Pick one below to start.</p><button class="pri" data-go="models">Browse models</button></div>
+ <div class="stats" id="stats"></div>
+ <h2>Installed models</h2><div class="grid" id="gInst"></div>
+ <h2>Recommended for this PC</h2><div class="grid" id="gRec"></div>
+</section>
+<section id="v-models" class="view scroll" hidden>
+ <h1>Models</h1><p class="mu">Every model here runs in your browser through WebGPU. Press Download to save it to this device.</p>
+ <div id="warn"></div>
+ <div class="bar"><input id="q" type="search" placeholder="Search models, e.g. coder, llama, qwen" aria-label="Search models"><label class="row"><input type="checkbox" id="fit" checked> Only models that fit my PC</label></div>
+ <div class="grid" id="gAll"></div>
+</section>
+<section id="v-chat" class="view" hidden>
+ <div class="row"><select id="cm" class="g" aria-label="Installed model"></select><button id="cload" class="pri">Load</button><button id="cstop">Stop</button></div>
+ <p id="cst" class="mu">Install a model first, then pick it here.</p>
+ <div id="log" aria-live="polite"></div>
+ <details><summary class="mu">Coder master prompt (auto-injected)</summary><textarea id="master" rows="7"></textarea></details>
+ <div class="row" style="margin-top:8px"><textarea id="msg" rows="2" class="g" placeholder="Ask for a game, web app or Python tool (Ctrl+Enter to send)"></textarea><button id="send" class="pri">Send</button></div>
+</section>
+<section id="v-work" class="view" hidden>
+ <div class="bar"><button id="nf">New file</button><button id="df">Delete</button><button id="run" class="pri">Run</button><button id="clr">Clear console</button><label class="row"><input type="checkbox" id="auto" checked> Auto-reload</label><span class="g"></span><button id="sd">Save to folder</button><button id="ld">Load from folder</button></div>
+ <div id="split"><div class="pn"><div id="ft"></div><div id="ed"></div></div><div class="pn"><iframe id="pv" sandbox="allow-scripts allow-modals allow-pointer-lock" title="Live preview"></iframe><pre id="con" aria-live="polite"></pre></div></div>
+</section>
+</main></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+<script>
+'use strict';
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],LS=localStorage;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+/* ---- PWA (inline manifest; no service worker in a single file) ---- */
+(()=>{const icon='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#0b1020"/><path d="M150 120v272M150 256l150-136M190 232l130 160" stroke="#7c6bff" stroke-width="44" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>');
+const m={name:'ProKust',short_name:'ProKust',start_url:location.href.split('#')[0],display:'standalone',background_color:'#0b1020',theme_color:'#0b1020',icons:[{src:icon,sizes:'any',type:'image/svg+xml'}]};
+const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'}));document.head.appendChild(l);
+const f=document.createElement('link');f.rel='icon';f.href=icon;document.head.appendChild(f);})();
+let defer=null;
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();defer=e;$('#install').hidden=false;});
+$('#install').onclick=async()=>{if(!defer)return;defer.prompt();await defer.userChoice;defer=null;$('#install').hidden=true;};
+addEventListener('appinstalled',()=>$('#install').hidden=true);
+/* ---- Auth (browser-only convenience lock, not real security) ---- */
+const codes=()=>{try{return JSON.parse(LS.getItem('pk_codes')||'[]')}catch{return[]}};
+const gen=()=>{const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';crypto.getRandomValues(new Uint8Array(6)).forEach(b=>s+=a[b%a.length]);return'PK-'+s};
+function enter(c){LS.setItem('pk_session',c);$('#auth').hidden=true;$('#app').hidden=false;$('#who').textContent=c;boot();}
+$('#signup').onclick=()=>{let c;do{c=gen()}while(codes().includes(c));LS.setItem('pk_codes',JSON.stringify([...codes(),c]));$('#code').value=c;const m=$('#amsg');m.className='ok';m.textContent='Your code is '+c+'. Save it. Signing you in...';setTimeout(()=>enter(c),2500);};
+$('#login').onclick=()=>{const c=$('#code').value.trim().toUpperCase();if(codes().includes(c))enter(c);else{$('#amsg').className='';$('#amsg').textContent='Code not found in this browser. Check it or create a new one.';}};
+$('#code').addEventListener('keydown',e=>{if(e.key==='Enter')$('#login').click()});
+$('#logout').onclick=()=>{LS.removeItem('pk_session');location.reload()};
+/* ---- Navigation ---- */
+function go(v){$$('.view').forEach(x=>x.hidden=x.id!=='v-'+v);$$('#nav .nv').forEach(b=>b.classList.toggle('on',b.dataset.v===v));if(v==='work')initEd();if(v==='chat')fillChat();}
+$$('#nav .nv').forEach(b=>b.onclick=()=>go(b.dataset.v));$$('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+/* ---- Hardware ---- */
+const HW={cores:navigator.hardwareConcurrency||0,ram:navigator.deviceMemory||0,gpu:'No WebGPU',web:false,buf:0};
+const tier=()=>(HW.ram>=32||HW.buf>=8*2**30)?3:(HW.ram>=16||(HW.web&&HW.ram>=8&&HW.buf>=4*2**30))?2:1;
+const TN={1:'Budget',2:'Mid-range',3:'High-end'},TM={1:3.5,2:9,3:34};
+async function detect(){try{if(navigator.gpu){const a=await navigator.gpu.requestAdapter();if(a){HW.web=true;HW.buf=a.limits.maxBufferSize;const i=a.info||{};HW.gpu=[i.vendor,i.architecture].filter(Boolean).join(' ')||'WebGPU ready';}}}catch{}}
+/* ---- Model catalog (WebLLM) ---- */
+const S={list:[],inst:new Set(),dl:{}};let W=null;
+const nice=id=>id.replace(/-q\d.*$/,'').replace(/-MLC$/,'');
+const bsz=id=>{const m=/(\d+(?:\.\d+)?)B/i.exec(id);return m?+m[1]:99};
+function tags(m){const id=m.model_id,t=[];if(/coder/i.test(id))t.push('<span class="tg hl">Coder</span>');if(/r1|reason/i.test(id))t.push('<span class="tg">Reasoning</span>');if(bsz(id)<=TM[tier()])t.push('<span class="tg hl">Fits your PC</span>');t.push('<span class="tg">'+(m.vram_required_MB?(m.vram_required_MB/1024).toFixed(1)+' GB VRAM':'size n/a')+'</span>');return t.join('')}
+function card(m){const id=m.model_id,d=S.dl[id];let b;
+ if(d)b=`<progress value="${d.p}" max="1"></progress><small>${esc(d.t)}</small>`;
+ else if(S.inst.has(id))b='<button class="pri" data-act="chat">Chat</button><button class="dng" data-act="rm">Uninstall</button>';
+ else b=`<button class="pri" data-act="dl" ${HW.web&&W?'':'disabled'}>Download</button>`;
+ return `<article class="mc" data-id="${esc(id)}"><div class="mt">${esc(nice(id))}</div><div class="tags">${tags(m)}</div><div class="mb">${b}</div></article>`}
+const byId=id=>S.list.find(m=>m.model_id===id);
+function render(){
+ const fit=m=>bsz(m.model_id)<=TM[tier()],score=m=>(/coder/i.test(m.model_id)?0:1)+(fit(m)?0:5);
+ const q=$('#q').value.toLowerCase(),all=S.list.filter(m=>(!$('#fit').checked||fit(m))&&m.model_id.toLowerCase().includes(q)).sort((a,b)=>score(a)-score(b)||a.model_id.localeCompare(b.model_id)).slice(0,60);
+ $('#gAll').innerHTML=all.map(card).join('')||'<p class="mu">No models match.</p>';
+ const inst=S.list.filter(m=>S.inst.has(m.model_id)||S.dl[m.model_id]);
+ $('#gInst').innerHTML=inst.map(card).join('')||'<p class="mu">Nothing installed yet. Open Models and press Download.</p>';
+ $('#gRec').innerHTML=S.list.filter(m=>fit(m)&&!S.inst.has(m.model_id)).sort((a,b)=>score(a)-score(b)).slice(0,3).map(card).join('')||'<p class="mu">Recommendations appear once the model catalog loads.</p>';
+ $('#stats').innerHTML=[['CPU cores',HW.cores||'?'],['RAM (browser caps at 8)',HW.ram?HW.ram+' GB':'?'],['GPU',esc(HW.gpu)],['PC class',TN[tier()]],['Installed',S.inst.size]].map(s=>`<div class="st"><span class="mu">${s[0]}</span><b>${s[1]}</b></div>`).join('');
+}
+function prog(id,p,t){S.dl[id]={p,t};$$(`.mc[data-id="${CSS.escape(id)}"] .mb`).forEach(el=>{let b=el.querySelector('progress');if(!b){el.innerHTML='<progress max="1"></progress><small></small>';b=el.querySelector('progress')}b.value=p;el.querySelector('small').textContent=t});}
+async function download(id){
+ prog(id,0,'Starting download...');
+ try{const e=await W.CreateMLCEngine(id,{initProgressCallback:r=>prog(id,r.progress||0,r.text||'')});await e.unload();S.inst.add(id);}
+ catch(err){try{if(await W.hasModelInCache(id))S.inst.add(id);else alert('Download failed: '+(err.message||err))}catch{alert('Download failed: '+(err.message||err))}}
+ delete S.dl[id];render();
+}
+async function uninstall(id){if(!confirm('Uninstall '+nice(id)+'? You can download it again later.'))return;try{if(engId===id&&eng){await eng.unload();eng=null;engId=''}await W.deleteModelAllInfoInCache(id);S.inst.delete(id);}catch(e){alert('Could not uninstall: '+e.message)}render();}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const id=b.closest('.mc').dataset.id,a=b.dataset.act;if(a==='dl')download(id);else if(a==='rm')uninstall(id);else if(a==='chat'){go('chat');$('#cm').value=id;loadModel(id);}});
+$('#q').oninput=render;$('#fit').onchange=render;
+async function catalog(){
+ if(!HW.web){$('#warn').innerHTML='<div class="warn">WebGPU is not available in this browser, so models cannot run here. Use a current Chrome or Edge on a desktop with a GPU.</div>';}
+ try{W=await import('https://esm.run/@mlc-ai/web-llm');}catch{$('#warn').innerHTML+='<div class="warn">Could not load the model engine from the CDN. Check your internet connection and reload.</div>';render();return;}
+ S.list=W.prebuiltAppConfig.model_list.filter(m=>!/embed|snowflake/i.test(m.model_id)&&!/-1k$/.test(m.model_id));
+ await Promise.all(S.list.map(async m=>{try{if(await W.hasModelInCache(m.model_id))S.inst.add(m.model_id)}catch{}}));render();
+}
+/* ---- Chat ---- */
+const MASTER=`You are ProKust Coder, an expert software engineer inside a browser IDE.
+1. Always return COMPLETE, runnable source files. Never truncate and never write "..." or "TODO" or "rest of code here".
+2. Put every file in its own fenced block whose info string is the language, a space, then the file name, e.g. \`\`\`html index.html, \`\`\`css style.css, \`\`\`javascript script.js, \`\`\`python main.py.
+3. Web apps and HTML5 games: index.html plus style.css and script.js linked by relative paths, vanilla JavaScript only, with game loop, input, scoring and restart.
+4. Python tools: standard library only (the runtime is Pyodide in the browser).
+5. After the files add at most three sentences on how to run it.`;
+$('#master').value=LS.getItem('pk_master')||MASTER;$('#master').onchange=()=>LS.setItem('pk_master',$('#master').value);
+let eng=null,engId='',hist=[],busy=false,stopFlag=false,last='';
+const cst=t=>$('#cst').textContent=t;
+function fillChat(){const ids=S.list.filter(m=>S.inst.has(m.model_id)).map(m=>m.model_id),cur=$('#cm').value;$('#cm').innerHTML=ids.map(i=>`<option value="${esc(i)}">${esc(nice(i))}</option>`).join('')||'<option value="">No models installed</option>';if(ids.includes(cur))$('#cm').value=cur;else if(engId&&ids.includes(engId))$('#cm').value=engId;}
+async function loadModel(id){
+ if(!id||!W)return;if(engId===id&&eng){cst('Ready: '+nice(id));return;}
+ try{if(eng){await eng.unload();eng=null;engId=''}cst('Loading '+nice(id)+'...');eng=await W.CreateMLCEngine(id,{initProgressCallback:r=>cst(r.text||'Loading...')});engId=id;hist=[];$('#log').innerHTML='';cst('Ready: '+nice(id)+'. Running fully on your device.');}
+ catch(e){cst('Load failed: '+e.message);}
+}
+$('#cload').onclick=()=>loadModel($('#cm').value);
+const bub=(c,t)=>{const d=document.createElement('div');d.className='m '+c;d.textContent=t;$('#log').appendChild(d);$('#log').scrollTop=1e9;return d};
+$('#send').onclick=async()=>{
+ const t=$('#msg').value.trim();if(!t||busy)return;if(!eng){cst('Load an installed model first.');return;}
+ $('#msg').value='';bub('u',t);hist.push({role:'user',content:t});const out=bub('a',''),m=[{role:'system',content:$('#master').value},...hist.slice(-10)];let acc='';busy=true;stopFlag=false;
+ try{const s=await eng.chat.completions.create({messages:m,stream:true,temperature:.4,max_tokens:4096});for await(const c of s){if(stopFlag){eng.interruptGenerate();break}acc+=c.choices[0]?.delta?.content||'';out.textContent=acc;$('#log').scrollTop=1e9;}}
+ catch(e){acc+='\n[Error: '+e.message+']';out.textContent=acc;}
+ hist.push({role:'assistant',content:acc});last=acc;busy=false;
+ const n=applyBlocks(acc);if(n){const d=bub('a','Added '+n+' file(s) to your Workspace.');const b=document.createElement('button');b.textContent='Open Workspace';b.className='pri';b.style.marginLeft='8px';b.onclick=()=>go('work');d.appendChild(b);}
+};
+$('#msg').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey))$('#send').click()});$('#cstop').onclick=()=>stopFlag=true;
+function applyBlocks(t){let n=0,m;const re=/```[\w+-]*[ \t]+([\w.\-\/]+\.\w+)[ \t]*\n([\s\S]*?)```/g;while((m=re.exec(t))){setFile(m[1],m[2]);n++}return n}
+/* ---- Workspace (Monaco + sandbox + Pyodide) ---- */
+const DEF={'index.html':'<!doctype html>\n<html>\n<head>\n<meta charset="utf-8">\n<title>Hello</title>\n<link rel="stylesheet" href="style.css">\n</head>\n<body>\n<h1>Hello from ProKust</h1>\n<script src="script.js"><\/script>\n</body>\n</html>\n','style.css':'body{font-family:system-ui;background:#101820;color:#eee;display:grid;place-items:center;height:100vh;margin:0}\n','script.js':'console.log("ProKust sandbox running");\n','main.py':'import sys\nprint("Python", sys.version)\nprint(sum(range(10)))\n'};
+let F={},cur='',ed=null,MD={};
+try{F=JSON.parse(LS.getItem('pk_files')||'null')||{...DEF}}catch{F={...DEF}}cur=Object.keys(F)[0]||'';
+const sv=()=>LS.setItem('pk_files',JSON.stringify(F));
+const lang=n=>({html:'html',css:'css',js:'javascript',py:'python',json:'json',md:'markdown'}[n.split('.').pop()]||'plaintext');
+function tabs(){$('#ft').innerHTML=Object.keys(F).map(n=>`<button data-n="${esc(n)}" class="${n===cur?'on':''}">${esc(n)}</button>`).join('');$$('#ft button').forEach(b=>b.onclick=()=>openF(b.dataset.n));}
+function mdl(n){if(!MD[n]){MD[n]=monaco.editor.createModel(F[n],lang(n));MD[n].onDidChangeContent(()=>{F[n]=MD[n].getValue();sv();if($('#auto').checked&&/\.(html|css|js)$/.test(cur)){clearTimeout(mdl.t);mdl.t=setTimeout(prev,600)}})}return MD[n]}
+function openF(n){if(!F[n])return;cur=n;if(ed)ed.setModel(mdl(n));tabs();}
+function setFile(n,c){n=n.replace(/^\/+/,'');F[n]=c;if(MD[n])MD[n].setValue(c);sv();if(ed)openF(n);else{cur=n;}}
+function initEd(){tabs();if(ed||!window.require)return;
+ const base='https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min';require.config({paths:{vs:base+'/vs'}});
+ window.MonacoEnvironment={getWorkerUrl:()=>URL.createObjectURL(new Blob([`self.MonacoEnvironment={baseUrl:'${base}/'};importScripts('${base}/vs/base/worker/workerMain.js');`],{type:'text/javascript'}))};
+ require(['vs/editor/editor.main'],()=>{ed=monaco.editor.create($('#ed'),{theme:'vs-dark',automaticLayout:true,minimap:{enabled:false},fontSize:14,tabSize:2});if(cur)openF(cur);prev();});}
+$('#nf').onclick=()=>{const n=prompt('File name (e.g. game.js)');if(n&&!F[n])setFile(n,'')};
+$('#df').onclick=()=>{if(!cur||!confirm('Delete '+cur+'?'))return;delete F[cur];if(MD[cur]){MD[cur].dispose();delete MD[cur]}sv();cur=Object.keys(F)[0]||'';if(cur)openF(cur);else tabs();};
+const con=$('#con');function clog(t,c){const d=document.createElement('div');d.textContent=t;if(c)d.style.color=c;con.appendChild(d);con.scrollTop=1e9}
+$('#clr').onclick=()=>con.textContent='';
+function doc(){let h=F['index.html']||'<body></body>';
+ h=h.replace(/<link[^>]+href=["']([^"']+\.css)["'][^>]*>/gi,(m,f)=>F[f]!=null?`<style>${F[f]}</style>`:m);
+ h=h.replace(/<script[^>]+src=["']([^"']+\.js)["'][^>]*>\s*<\/script>/gi,(m,f)=>F[f]!=null?`<script>${F[f].replace(/<\/script/gi,'<\\/script')}<\/script>`:m);
+ const k=`<script>(function(){const s=(t,a)=>parent.postMessage({pk:t,m:[].map.call(a,x=>{try{return typeof x==='object'?JSON.stringify(x):String(x)}catch{return String(x)}}).join(' ')},'*');['log','warn','error'].forEach(k=>{const o=console[k];console[k]=function(){s(k,arguments);o.apply(console,arguments)}});addEventListener('error',e=>s('error',[e.message+' (line '+e.lineno+')']));})();<\/script>`;
+ return h.includes('<head>')?h.replace('<head>','<head>'+k):k+h}
+function prev(){$('#pv').srcdoc=doc()}
+addEventListener('message',e=>{if(e.data&&e.data.pk)clog('['+e.data.pk+'] '+e.data.m,e.data.pk==='error'?'var(--bad)':null)});
+let py=null;async function loadPy(){if(py)return py;clog('Loading Python runtime (about 10 MB, first run only)...');await new Promise((r,j)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js';s.onload=r;s.onerror=()=>j(new Error('Could not load Pyodide. Check your connection.'));document.head.appendChild(s)});py=await loadPyodide();py.setStdout({batched:t=>clog(t)});py.setStderr({batched:t=>clog(t,'var(--bad)')});clog('Python ready.','var(--ok)');return py}
+$('#run').onclick=async()=>{if(!cur)return;if(cur.endsWith('.py')){try{const p=await loadPy();await p.loadPackagesFromImports(F[cur]);await p.runPythonAsync(F[cur])}catch(e){clog(String(e),'var(--bad)')}}else prev()};
+let dir=null;async function pick(){if(!window.showDirectoryPicker){alert('Folder access needs Chrome or Edge on desktop.');return null}try{dir=await showDirectoryPicker({mode:'readwrite'});return dir}catch{return null}}
+$('#sd').onclick=async()=>{const d=dir||await pick();if(!d)return;for(const[n,c]of Object.entries(F)){let h=d;const p=n.split('/');for(const x of p.slice(0,-1))h=await h.getDirectoryHandle(x,{create:true});const w=await(await h.getFileHandle(p.at(-1),{create:true})).createWritable();await w.write(c);await w.close()}clog('Saved '+Object.keys(F).length+' files to '+d.name,'var(--ok)')};
+$('#ld').onclick=async()=>{const d=dir||await pick();if(!d)return;let n=0;for await(const[name,h]of d.entries()){if(h.kind==='file'&&/\.(html|css|js|py|json|md|txt)$/i.test(name)){setFile(name,await(await h.getFile()).text());n++}}clog('Loaded '+n+' files from '+d.name)};
+/* ---- Boot ---- */
+let booted=false;async function boot(){if(booted)return;booted=true;await detect();render();await catalog();}
+if(LS.getItem('pk_session')&&codes().includes(LS.getItem('pk_session')))enter(LS.getItem('pk_session'));
+</script></body></html>
